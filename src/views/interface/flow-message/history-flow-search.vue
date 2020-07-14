@@ -1,31 +1,105 @@
 <template>
-    <div class="container">
-      <h1>历史流量查询</h1>
-      <p>
-        <span style="font-size: 16px;font-weight: bold;">1、通过snmp定时获取流量统计信息，该信息需要写入数据库，作为查询使用，默认可以存储1个月</span><br>
-        <span style="color: red;">备注：admin可以修改存储的数据周期，范围为1~90天，只存储字节速率。间隔时间较短时，可能导致响应过慢</span>
-      </p>
-      <p>
-        <span style="font-size: 16px;font-weight: bold;">2、支持以板卡为单位查询历史流量信息，查询结果已曲线图的形式展示，横轴为时间，纵轴为流量大小</span><br>
-        <span style="color: red;">备注：支持查询一天、一周、一个月、一个季度历史信息，鼠标划过曲线图时可以展示对应点的具体流量情况</span>
-      </p>
-      <p>
-        <span style="font-size: 16px;font-weight: bold;">3、支持查询流量历史峰谷值</span><br>
-        <span style="color: red;">备注：在查询历史信息时，在旁边展示峰值信息</span>
-      </p>
-      <p>
-        <span style="font-size: 16px;font-weight: bold;">4、支持流量清除功能（清空后端数据）</span><br>
-        <span style="color: red;">备注：清除前需要二次确认</span>
-      </p>
+  <div class="history-flow-search-container">
+
+    <div class="operation">
+      <label>历史流量存储周期(天)：</label>
+      <el-input
+        class="input"
+        placeholder="请输入内容"
+        v-model="flowValue"
+        :disabled="true">
+      </el-input>
+      <el-button size="small" type="primary" @click="open1">修改存储周期</el-button>
+      <el-button size="small" type="danger" @click="open">清空历史流量</el-button>
     </div>
+
+    <!-- 主体位置 -->
+    <div class="container-body">
+      <chart height="100%" width="100%" />
+    </div>
+
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "history-flow-search"
+  import Chart from '../../../components/Charts/MixChart'
+  export default {
+    name: "history-flow-search",
+    components: { Chart },
+    data() {
+      return {
+        flowValue: 90
+      }
+    },
+    methods: {
+      open() {
+        this.$confirm('此操作将永久清除现有历史流量信息, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+      open1() {
+        this.$prompt('请输入历史流量存储周期', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /^(?:[1-8][0-9]?|90)$/,
+          inputErrorMessage: '请输入1-90的数字'
+        }).then(({ value }) => {
+          this.flowValue = value
+          this.$message({
+            type: 'success',
+            message: '修改成功'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消修改'
+          });
+        });
+      }
     }
+  }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  .history-flow-search-container {
+    height: 100%;
+    margin: 20px;
 
+    .operation {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 10px 20px;
+      border-radius: 4px;
+      border:1px solid #DCDFE6;
+
+      .input {
+        width: 50px;
+        margin-right: 20px;
+      }
+
+      button {
+        margin-right: 10px;
+      }
+    }
+
+    .container-body {
+      position: relative;
+      width: 100%;
+      height: calc(100vh - 185px);
+    }
+
+  }
 </style>

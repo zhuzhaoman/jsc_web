@@ -1,27 +1,119 @@
 <template>
-    <div class="container">
-      <h1>端口流量信息查询</h1>
-      <p>
-        <span style="font-size: 16px;font-weight: bold;">1、按照板卡为单位查询实时流量</span><br>
-        <span style="color: red;">备注：需要展示输入输出总包数、字节数、包速率、字节速度、丢包数、丢包率、错报数、错包率;仅展示总流量信息</span>
-      </p>
-      <p>
-        <span style="font-size: 16px;font-weight: bold;">2、按照输出端口组为单位查询实时流量</span><br>
-        <span style="color: red;">备注：需要展示输入输出总包数、字节数、包速率、字节速度、丢包数、丢包率、错报数、错包率;仅展示总流量信息</span>
-      </p>
-      <p>
-        <span style="font-size: 16px;font-weight: bold;">3、按照输入端口组为单位查询实时流量</span><br>
-        <span style="color: red;">备注：需要展示输入输出总包数、字节数、包速率、字节速度、丢包数、丢包率、错报数、错包率;仅展示总流量信息</span>
-      </p>
+  <div class="real-time-flow-search-container">
+
+    <div class="search">
+      <el-select class="input" v-model="value" placeholder="请选择">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      <el-input class="input"  v-model="content" placeholder="请输入内容" clearable></el-input>
+      <el-button size="small" type="primary">搜索</el-button>
     </div>
+
+    <div class="table">
+      <el-table
+        :data="tableData"
+        border
+        style="width: 100%">
+        <el-table-column
+          prop="date"
+          label="总包数"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="字节数"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="包速率">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="字节速度">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="丢包数">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="丢包率">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="错报数">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="错包率">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="总流量">
+        </el-table-column>
+      </el-table>
+    </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "port-flow-search"
+  export default {
+    name: "port-flow-search",
+    data() {
+      return {
+        options: [
+          {
+            value: '1',
+            label: '按照板卡为单位'
+          },
+          {
+            value: '2',
+            label: '按照输出端口组为单位'
+          },
+          {
+            value: '3',
+            label: '按照输入端口组为单位'
+          }
+        ],
+        value: '1',
+        content: ''
+      }
     }
+  }
 </script>
 
 <style lang="scss" scoped>
+  .real-time-flow-search-container:hover {
+    box-shadow: 0 1px 6px rgba(0,0,0,.25);
+    border-color: #eee;
+  }
 
+  .real-time-flow-search-container {
+    height: 100%;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 4px;
+    border:1px solid #DCDFE6;
+
+    .search {
+      display: flex;
+      justify-content: flex-start;
+
+      .input {
+        width: 200px;
+        margin-right: 20px;
+      }
+    }
+
+    .table {
+      margin-top: 10px;
+    }
+
+  }
 </style>
