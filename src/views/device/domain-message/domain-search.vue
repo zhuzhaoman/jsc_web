@@ -3,7 +3,7 @@
     <div class="search">
       <el-input class="input" v-model="domain" placeholder="请指定域类型" clearable></el-input>
       <el-input class="input"  v-model="domain_id" placeholder="请指定域ID" clearable></el-input>
-      <el-button size="small" type="primary">搜索</el-button>
+      <el-button size="small" type="primary">立即查询</el-button>
     </div>
 
     <div class="table">
@@ -65,31 +65,5 @@
 </script>
 
 <style lang="scss" scoped>
-  .domain-search-container:hover {
-    box-shadow: 0 1px 6px rgba(0,0,0,.25);
-    border-color: #eee;
-  }
-
-  .domain-search-container {
-    height: 100%;
-    margin: 20px;
-    padding: 20px;
-    border-radius: 4px;
-    border:1px solid #DCDFE6;
-
-    .search {
-      display: flex;
-      justify-content: flex-start;
-
-      .input {
-        width: 200px;
-        margin-right: 20px;
-      }
-    }
-
-    .table {
-      margin-top: 10px;
-    }
-
-  }
+  @import "../../../styles/domain-search";
 </style>

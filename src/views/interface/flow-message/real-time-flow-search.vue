@@ -89,31 +89,5 @@
 </script>
 
 <style lang="scss" scoped>
-  .real-time-flow-search-container:hover {
-    box-shadow: 0 1px 6px rgba(0,0,0,.25);
-    border-color: #eee;
-  }
-
-  .real-time-flow-search-container {
-    height: 100%;
-    margin: 20px;
-    padding: 20px;
-    border-radius: 4px;
-    border:1px solid #DCDFE6;
-
-    .search {
-      display: flex;
-      justify-content: flex-start;
-
-      .input {
-        width: 200px;
-        margin-right: 20px;
-      }
-    }
-
-    .table {
-      margin-top: 10px;
-    }
-
-  }
+  @import "../../../styles/real-time-flow-search";
 </style>
