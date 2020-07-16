@@ -102,9 +102,15 @@
           type="primary"
           size="small"
           style="margin-left: 5px;"
-          @click="searchWarning"
-        >
+          @click="searchWarning">
           搜索
+        </el-button>
+        <el-button
+          type="danger"
+          size="small"
+          style="margin-left: 5px;"
+          @click="cleanErrorMsg">
+          清除全部异常信息
         </el-button>
       </div>
 
@@ -131,6 +137,12 @@
         </el-table-column>
       </el-table>
 
+      <el-pagination style="margin-top: 20px;"
+        background
+        layout="prev, pager, next"
+        :total="100">
+      </el-pagination>
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -143,7 +155,7 @@
   import { mapGetters } from 'vuex'
   import adminDashboard from './admin'
   import editorDashboard from './editor'
-  import Chart from '../../components/Charts/MixChart'
+  import Chart from '../../components/Charts/LineMarker'
   import CountTo from 'vue-count-to'
 
   export default {
@@ -214,6 +226,23 @@
         let date = this.searchDate
         console.log(date)
         console.log(typeof date)
+      },
+      cleanErrorMsg() {
+        this.$confirm('此操作将永久删除异常记录, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       }
     }
   }

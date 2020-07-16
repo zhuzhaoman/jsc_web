@@ -50,11 +50,8 @@
         }
       }
     }
-    .warning-group:hover {
-      cursor:pointer;
-    }
-
-    @keyframes shake { /* 水平抖动，核心代码 */
+    /* 水平抖动，核心代码 */
+    @keyframes shake {
       10%, 90% { transform: translate3d(-1px, 0, 0); }
       20%, 80% { transform: translate3d(+2px, 0, 0); }
       30%, 70% { transform: translate3d(-4px, 0, 0); }
@@ -63,6 +60,7 @@
     }
 
     .warning-group:hover {
+      cursor:pointer;
       animation: shake 800ms ease-in-out;
     }
   }

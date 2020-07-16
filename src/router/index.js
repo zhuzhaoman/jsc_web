@@ -62,10 +62,16 @@ export const constantRoutes = [
         meta: { title: '设备信息查询', icon: 'device-search'}
       },
       {
-        path: 'domain-message/domainSearch',
-        component: () => import('@/views/device/domain-message/domain-search'),
+        path: 'domainSearch',
+        component: () => import('@/views/device/domain-search'),
         name: 'domainSearch',
         meta: { title: '域信息查询', icon: 'domain-search', noCache: true }
+      },
+      {
+        path: 'deviceSetUp',
+        component: () => import('@/views/device/device-setup'),
+        name: 'deviceSetUp',
+        meta: { title: '设备警告值设置', icon: 'domain-search', noCache: true }
       }
     ]
   },

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-  import Chart from '../../../components/Charts/MixChart'
+  import Chart from '../../../components/Charts/LineMarker'
   export default {
     name: "history-flow-search",
     components: { Chart },

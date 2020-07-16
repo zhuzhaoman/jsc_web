@@ -7,192 +7,184 @@
     <div class="basic-message">
 
       <div class="operation">
-        <el-button type="primary" size="small" plain>刷新数据</el-button>
-        <el-button type="success" size="small" plain>查看历史数据</el-button>
+        <el-button type="primary" size="mini" plain>刷新数据</el-button>
       </div>
 
       <el-row>
         <el-col :span="12">
           <div class="col">
-            <div class="label">设备IP：</div>
-            <el-tag class="ip">192.168.17.114</el-tag>
+            <div class="label">设备ID：</div>
+            <el-tag class="equ-id">1</el-tag>
           </div>
         </el-col>
         <el-col :span="12">
           <div class="col">
-            <div class="label">端口(异常数)：</div>
-            <el-tag class="port" type="danger">4</el-tag>
-          </div>
-        </el-col>
-      </el-row>
-
-      <el-row style="margin-top: 30px;">
-        <el-col :span="12">
-          <div class="col">
-            <div class="label">电源状态：</div>
-            <el-tag class="power-supply" type="success">正常</el-tag>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <div class="col">
-            <div class="label">风扇状态：</div>
-            <el-tag class="fan" type="success">正常</el-tag>
+            <div class="label">设备名称：</div>
+            <el-tag class="equ-name">3320</el-tag>
           </div>
         </el-col>
       </el-row>
 
-      <el-row style="margin-top: 30px;">
+      <el-row class="row">
         <el-col :span="12">
           <div class="col">
-            <div class="label">机箱类型：</div>
-            <el-tag class="case-type">16U</el-tag>
+            <div class="label">设备类型：</div>
+            <el-tag class="equ-type" >BOX</el-tag>
           </div>
         </el-col>
         <el-col :span="12">
           <div class="col">
             <div class="label">软件版本：</div>
-            <el-tag class="software-version">3.6.4</el-tag>
+            <el-tag class="software-version">main_version=v3.0.0</el-tag>
           </div>
         </el-col>
       </el-row>
 
-      <el-row style="margin-top: 30px;">
+      <el-row class="row">
         <el-col :span="12">
           <div class="col">
-            <div class="label">启动时间：</div>
-            <div class="start-time">
+            <div class="label">最大功率：</div>
+            <el-tag class="max-power-num">0</el-tag>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="col">
+            <div class="label">正常功率：</div>
+            <el-tag class="normal-power-num">0</el-tag>
+          </div>
+        </el-col>
+      </el-row>
+
+      <el-row class="row">
+        <el-col :span="12">
+          <div class="col">
+            <div class="label">最大风扇数：</div>
+            <el-tag class="max-fan-num">0</el-tag>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="col">
+            <div class="label">正常风扇数：</div>
+            <el-tag class="normal-fan-num">0</el-tag>
+          </div>
+        </el-col>
+      </el-row>
+
+      <el-row class="row">
+        <el-col :span="12">
+          <div class="col">
+            <div class="label">最大内存：</div>
+            <el-tag class="max-memory">3877【MB】</el-tag>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="col">
+            <div class="label">GuiServerIP：</div>
+            <el-tag class="gui-server-ip">OFF</el-tag>
+          </div>
+        </el-col>
+      </el-row>
+
+      <el-row class="row">
+        <el-col :span="12">
+          <div class="col">
+            <div class="label">系统时间：</div>
+            <div class="system-time">
               <svg-icon icon-class="date" class-name='date-icon' />
-              2020/07/11 11:11:12
+              2020-07-15 10:15:23
             </div>
           </div>
         </el-col>
         <el-col :span="12">
           <div class="col">
-            <div class="label">采集时间：</div>
-            <div class="collection-time">
-              <svg-icon icon-class="date" class-name='date-icon' />
-              2020/07/21 16:11:12
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
-
-    <el-divider content-position="left">
-      <span style="font-size: 16px;font-weight: bold;">板卡信息</span>
-    </el-divider>
-    <div class="card-message">
-
-      <div class="operation">
-        <el-button type="primary" size="small" plain>刷新数据</el-button>
-        <el-button type="success" size="small" plain>查看历史数据</el-button>
-      </div>
-
-      <el-row>
-        <el-col :span="12">
-          <div class="col">
-            <div class="label">板卡类型：</div>
-            <div class="card-type">
-              <el-tag>ABC-13fdsa-DFA</el-tag>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <div class="col">
-            <div class="label">温度：</div>
-            <el-tag class="temperature" type="danger">58℃</el-tag>
+            <div class="label">已运行：</div>
+            <el-tag class="run-time" type="success">1days 19hours 1mins</el-tag>
           </div>
         </el-col>
       </el-row>
 
-      <el-row style="margin-top: 30px;">
-        <el-col :span="12">
-          <div class="col">
-            <div class="label">后IO卡类型：</div>
-            <el-tag class="io-type">TTT-fdafdsa-DFA</el-tag>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <div class="col">
-            <div class="label">板卡运行状态：</div>
-            <div class="card-status">
-              <el-tag type="success">正常</el-tag>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-
-      <el-row style="margin-top: 30px;">
-        <el-col :span="12">
-          <div class="col">
-            <div class="label">光接口卡类型：</div>
-            <el-tag class="light-port-type">FDAJLK-13DFADFSA</el-tag>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <div class="col">
-            <div class="label">采集时间：</div>
-            <div class="collection-time">
-              <svg-icon icon-class="date" class-name='date-icon' />
-              2020/07/11 11:11:12
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-
-    </div>
-
-    <el-divider content-position="left">
-      <span style="font-size: 16px;font-weight: bold;">CPU内存信息</span>
-    </el-divider>
-    <div class="cpu-message">
-
-      <div class="operation">
-        <el-button type="primary" size="small" plain>刷新数据</el-button>
-        <el-button type="success" size="small" plain>查看历史数据</el-button>
-      </div>
-
-      <el-row>
+      <el-row class="row">
         <el-col :span="24">
           <div class="col">
             <div class="block" style="width: 100%;margin-bottom: 10px;">
               <div class="label" style="margin-bottom: 5px">cpu利用率：</div>
-              <el-progress :text-inside="true" :stroke-width="15" :percentage="70" status="exception"></el-progress>
+              <el-progress :text-inside="true" :stroke-width="15" :percentage="18" status="success"></el-progress>
             </div>
           </div>
         </el-col>
       </el-row>
 
-      <el-row>
+      <el-row class="row">
         <el-col :span="24">
           <div class="col">
             <div class="block" style="width: 100%;margin-bottom: 10px;">
-              <div class="label" style="margin-bottom: 5px">内存利用率：</div>
-              <el-progress :text-inside="true" :stroke-width="15" :percentage="26"></el-progress>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-
-      <el-row style="margin-top: 30px;">
-        <el-col :span="24">
-          <div class="col">
-            <div class="label">采集时间：</div>
-            <div class="collection-time">
-              <svg-icon icon-class="date" class-name='date-icon' />
-              2020/07/11 11:11:12
+              <div class="label" style="margin-bottom: 5px">内存使用率：</div>
+              <el-progress :text-inside="true" :stroke-width="15" :percentage="60" status="warning"></el-progress>
             </div>
           </div>
         </el-col>
       </el-row>
     </div>
 
+    <el-divider content-position="left">
+      <span style="font-size: 16px;font-weight: bold;">槽位信息</span>
+    </el-divider>
+    <div class="slot-message">
+      <el-row>
+        <el-col :span="24">
+          <template>
+            <el-table
+              :data="tableData"
+              stripe
+              style="width: 100%">
+              <el-table-column
+                prop="slot"
+                label="槽位"
+                width="180">
+              </el-table-column>
+              <el-table-column
+                prop="cardType"
+                label="板卡类型">
+              </el-table-column>
+              <el-table-column
+                prop="cardRoleType"
+                label="板卡角色类型">
+              </el-table-column>
+              <el-table-column label="运行状态">
+                <template slot-scope="scope">
+                  <el-tag type="success">{{scope.row.runStatus}}</el-tag>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+        </el-col>
+      </el-row>
+
+    </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: "index"
+    name: "index",
+    data() {
+      return {
+        tableData: [
+          {
+            slot: 'slot[1]',
+            cardType: 'NGP_PPB3320',
+            cardRoleType: 'DOUBLE_NPS_TYPE',
+            runStatus: 'Ready'
+          },
+          {
+            slot: 'slot[2]',
+            cardType: 'NGP_PPB3320',
+            cardRoleType: 'DOUBLE_NPS_TYPE',
+            runStatus: 'Ready'
+          }
+        ]
+      }
+    }
   }
 </script>
 

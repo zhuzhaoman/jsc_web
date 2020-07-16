@@ -11,7 +11,7 @@
         </el-option>
       </el-select>
       <el-input class="input"  v-model="content" placeholder="请输入内容" clearable></el-input>
-      <el-button size="small" type="primary">搜索</el-button>
+      <el-button size="mini" type="primary">搜索</el-button>
     </div>
 
     <div class="table">

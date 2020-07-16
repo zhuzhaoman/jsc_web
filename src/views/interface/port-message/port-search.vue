@@ -1,22 +1,183 @@
 <template>
-  <div class="container">
-    <h1>端口信息查询</h1>
-    <p>
-      <span style="font-size: 16px;font-weight: bold;">1、支持查询端口组状态(up/down)</span><br>
-      <span style="color: red;">
-        备注：以板卡为单位，现在各个端口，用绿色标识up，红色表示down。端口状态信息由systemmanager主动上报web，5分钟上报一次<br>
-        若有端口link状态改变，会立刻上报。
-      </span>
-    </p>
+  <div class="port-search-container">
+
+    <el-divider content-position="left">
+      <span style="font-size: 16px;font-weight: bold;">端口状态</span>
+    </el-divider>
+    <div class="port-status">
+
+      <div class="operation">
+        <el-button type="primary" size="mini" plain>刷新端口状态</el-button>
+      </div>
+
+      <div class="port-status-table">
+
+        <div class="block" style="padding-right: 20px;display: flex;">
+          <div v-for="c in Q1_col" class="row">
+            <div v-for="r in Q1_row" class="col">
+              <!--            <div class="q-item"-->
+              <!--                 :style="{margin: c === 2 ? '0 10px 0 0' : '', background: c === 4 ? '#67C23A' : c % 4 === 0 ? '#F56C6C' : '#ffffff'}">-->
+              <div class="q-item" :style="{margin: c === 2 ? '0 10px 0 0' : '', background: ((c -1) * 3 + r) === 1 ? '#67C23A' : '#ffffff'}">
+                {{"Q" + ((c -1) * 3 + r)}}
+              </div>
+              <div class="mask" style="width: 65px; height: 20px;" v-if="r < 3">
+                <img src="@/assets/port/q.jpg" width="65" height="20">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="block" style="padding-right: 20px; display: flex;">
+          <div v-for="c in S_col" class="row">
+            <div v-for="r in S_row" class="col">
+              <div class="s-item"
+                   :style="{margin : (c % 4 === 0) && (c !== 12) ? '0 10px 0 0': '0', background: '#ffffff'}">
+                {{"S" + ((c -1) * 3 + r)}}
+              </div>
+              <div class="mask" style="width: 55px; height: 20px;" v-if="r < 3">
+                <img src="@/assets/port/s.jpg" width="55" height="20">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="block" style="padding-right: 20px;display: flex;">
+          <div v-for="c in Q1_col" class="row">
+            <div v-for="r in Q1_row" class="col">
+              <div class="q-item"
+                   :style="{margin : c === 2 ? '0 10px 0 0': '0', background: ((c + 3) * 3 + r) === 15 ? '#F56C6C' : '#ffffff'}">
+                {{"Q" + ((c + 3) * 3 + r)}}
+              </div>
+              <div class="mask" style="width: 65px; height: 20px;" v-if="r < 3">
+                <img src="@/assets/port/q.jpg" width="65" height="20">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="port-status-mark">
+        <div class="block">
+          <div class="success"></div>
+          <div class="label">UP</div>
+        </div>
+        <div class="block">
+          <div class="error"></div>
+          <div class="label">DOWN</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
   export default {
-    name: "port-search"
+    name: "port-search",
+    data() {
+      return {
+        Q1_row: [1, 2, 3],
+        Q1_col: [1, 2, 3, 4],
+        S_row: [1, 2, 3],
+        S_col: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+      }
+    },
+    mounted() {
+
+    }
   }
 </script>
 
 <style lang="scss" scoped>
+  .port-search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    margin: 20px;
 
+    .port-status:hover {
+      box-shadow: 0 1px 6px rgba(0,0,0,.25);
+      border-color: #eee;
+    }
+    .port-status {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 4px;
+      padding: 20px;
+      border: 1px solid #DCDFE6;
+
+      .operation {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+      }
+
+      .port-status-table {
+        width: 1300px;
+        padding: 20px;
+        display: flex;
+        justify-content: flex-start;
+        background: #1e50a0;
+        box-sizing: border-box;
+        font-size: 12px;
+        color: #606266;
+
+        .q-item {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 65px;
+          height: 30px;
+          border-left: 1px solid #ccc;
+        }
+
+        .s-item {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 55px;
+          height: 30px;
+          border-left: 1px solid #ccc;
+        }
+      }
+
+      .port-status-mark {
+        width: 1300px;
+        display: flex;
+        justify-content: flex-end;
+        padding: 20px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #606266;
+
+        .block {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-right: 30px;
+
+          .success {
+            width: 65px;
+            height: 30px;
+            background: #67C23A;
+            margin-right: 10px;
+          }
+
+          .error {
+            width: 65px;
+            height: 30px;
+            background: #F56C6C;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+
+
+  }
 </style>
