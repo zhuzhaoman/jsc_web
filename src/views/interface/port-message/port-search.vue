@@ -18,9 +18,9 @@
               <!--            <div class="q-item"-->
               <!--                 :style="{margin: c === 2 ? '0 10px 0 0' : '', background: c === 4 ? '#67C23A' : c % 4 === 0 ? '#F56C6C' : '#ffffff'}">-->
               <div class="q-item" :style="{margin: c === 2 ? '0 10px 0 0' : '', background: ((c -1) * 3 + r) === 1 ? '#67C23A' : '#ffffff'}">
-                {{"Q" + ((c -1) * 3 + r)}}
+                {{ "Q" + ((c -1) * 3 + r) }}
               </div>
-              <div class="mask" style="width: 65px; height: 20px;" v-if="r < 3">
+              <div v-if="r < 3" class="mask" style="width: 65px; height: 20px;">
                 <img src="@/assets/port/q.jpg" width="65" height="20">
               </div>
             </div>
@@ -30,11 +30,13 @@
         <div class="block" style="padding-right: 20px; display: flex;">
           <div v-for="c in S_col" class="row">
             <div v-for="r in S_row" class="col">
-              <div class="s-item"
-                   :style="{margin : (c % 4 === 0) && (c !== 12) ? '0 10px 0 0': '0', background: '#ffffff'}">
-                {{"S" + ((c -1) * 3 + r)}}
+              <div
+                class="s-item"
+                :style="{margin : (c % 4 === 0) && (c !== 12) ? '0 10px 0 0': '0', background: '#ffffff'}"
+              >
+                {{ "S" + ((c -1) * 3 + r) }}
               </div>
-              <div class="mask" style="width: 55px; height: 20px;" v-if="r < 3">
+              <div v-if="r < 3" class="mask" style="width: 55px; height: 20px;">
                 <img src="@/assets/port/s.jpg" width="55" height="20">
               </div>
             </div>
@@ -44,11 +46,13 @@
         <div class="block" style="padding-right: 20px;display: flex;">
           <div v-for="c in Q1_col" class="row">
             <div v-for="r in Q1_row" class="col">
-              <div class="q-item"
-                   :style="{margin : c === 2 ? '0 10px 0 0': '0', background: ((c + 3) * 3 + r) === 15 ? '#F56C6C' : '#ffffff'}">
-                {{"Q" + ((c + 3) * 3 + r)}}
+              <div
+                class="q-item"
+                :style="{margin : c === 2 ? '0 10px 0 0': '0', background: ((c + 3) * 3 + r) === 15 ? '#F56C6C' : '#ffffff'}"
+              >
+                {{ "Q" + ((c + 3) * 3 + r) }}
               </div>
-              <div class="mask" style="width: 65px; height: 20px;" v-if="r < 3">
+              <div v-if="r < 3" class="mask" style="width: 65px; height: 20px;">
                 <img src="@/assets/port/q.jpg" width="65" height="20">
               </div>
             </div>
@@ -59,11 +63,11 @@
 
       <div class="port-status-mark">
         <div class="block">
-          <div class="success"></div>
+          <div class="success" />
           <div class="label">UP</div>
         </div>
         <div class="block">
-          <div class="error"></div>
+          <div class="error" />
           <div class="label">DOWN</div>
         </div>
       </div>
@@ -73,20 +77,20 @@
 </template>
 
 <script>
-  export default {
-    name: "port-search",
-    data() {
-      return {
-        Q1_row: [1, 2, 3],
-        Q1_col: [1, 2, 3, 4],
-        S_row: [1, 2, 3],
-        S_col: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-      }
-    },
-    mounted() {
-
+export default {
+  name: 'PortSearch',
+  data() {
+    return {
+      Q1_row: [1, 2, 3],
+      Q1_col: [1, 2, 3, 4],
+      S_row: [1, 2, 3],
+      S_col: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     }
+  },
+  mounted() {
+
   }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -120,6 +124,7 @@
       .port-status-table {
         width: 1300px;
         padding: 20px;
+        margin-top: 10px;
         display: flex;
         justify-content: flex-start;
         background: #1e50a0;
@@ -177,7 +182,6 @@
         }
       }
     }
-
 
   }
 </style>
