@@ -1,7 +1,16 @@
 <template>
   <div class="container">
     <div class="operation">
-      <el-select v-model="value" placeholder="请选择" @change="selectChange(value)">
+      <el-select v-model="domainValue" placeholder="请选择域">
+        <el-option
+          v-for="item in domain"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+
+      <el-select class="change" v-model="value" placeholder="请选择" @change="selectChange(value)">
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -60,6 +69,13 @@ export default {
       date: [],
       input: [],
       output: [],
+      domainValue: 'operator',
+      domain: [
+        {
+          value: 'operator',
+          label: 'operator'
+        }
+      ],
       options: [
         {
           value: 'day',
@@ -330,7 +346,7 @@ export default {
       display: flex;
       align-items: center;
 
-      .day,.month {
+      .change,.day,.month {
         margin-left: 10px;
       }
     }
