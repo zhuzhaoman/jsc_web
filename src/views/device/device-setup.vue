@@ -132,44 +132,5 @@
 </script>
 
 <style lang="scss" scoped>
-  .device-setup-container {
-    height: 100%;
-    color: #606266;
-    font-size: 14px;
-    font-weight: bold;
-
-    .device-setup {
-      width: 100%;
-      height: 100%;
-      margin: 20px;
-      padding: 20px;
-      border: 1px solid #DCDFE6;
-      border-radius: 4px;
-
-      .row {
-        margin-top: 20px;
-      }
-
-      .col {
-        display: flex;
-        align-items: center;
-
-        .input {
-          width: 100px;
-          margin-right: 20px;
-        }
-
-        .block {
-          width: 60%;
-          margin: 0 10px;
-        }
-      }
-    }
-
-    .device-setup:hover {
-      box-shadow: 0 1px 6px rgba(0,0,0,.25);
-      border-color: #eee;
-    }
-
-  }
+  @import "../../styles/device-setup";
 </style>
