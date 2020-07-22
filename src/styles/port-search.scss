@@ -19,10 +19,18 @@
     border: 1px solid #DCDFE6;
 
     .operation {
-      width: 100%;
+      width: 1300px;
+      padding: 20px 0;
       display: flex;
-      justify-content: flex-end;
-      margin-bottom: 10px;
+      justify-content: flex-start;
+
+      .select {
+        margin-left: 10px;
+      }
+
+      .button1,.button2 {
+        margin-left: 10px;
+      }
     }
 
     .port-status-table {
@@ -31,7 +39,7 @@
       margin-top: 10px;
       display: flex;
       justify-content: flex-start;
-      background: #1e50a0;
+      background: #007bc3;
       box-sizing: border-box;
       font-size: 12px;
       color: #606266;
@@ -52,35 +60,38 @@
           top: 200%;
           width: 100%;
           height: 100%;
-          background: rgba(0,0,0,.5);
+          background: rgba(0,0,0,.3);
         }
       }
 
+
       .q-item:hover {
-        background: #f2f2f2 !important;
-        border-left: 1px solid rgba(0,0,0,.5) !important;
 
         span {
           display: none;
         }
 
         .mask-inner {
-          padding: 0 10px;
           top: 0;
           color: #ffffff;
           display: flex;
-          justify-content: space-between;
-          flex-wrap: wrap;
+          justify-content: center;
+          align-items: center;
 
           .port{
-            width: 10px;
-            height: 10px;
-            margin: 3px 5px 0 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 2px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
+            font-size: 4px;
+            color: #606266;
           }
 
           .one, .three {
-            background: #67C23A;
+            background: #13ce66;
           }
 
           .two, .four {
@@ -104,7 +115,7 @@
       display: flex;
       justify-content: flex-end;
       padding: 20px;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: bold;
       color: #606266;
 
@@ -115,24 +126,24 @@
         margin-right: 30px;
 
         .success {
-          width: 65px;
-          height: 30px;
-          background: #67C23A;
+          width: 50px;
+          height: 25px;
+          background: #13ce66;
           border: 1px solid #DCDFE6;
           margin-right: 10px;
         }
 
         .four_ten {
-          width: 65px;
-          height: 30px;
-          background: #E6A23C;
+          width: 50px;
+          height: 25px;
+          background: #ffd700;
           border: 1px solid #DCDFE6;
           margin-right: 10px;
         }
 
         .error {
-          width: 65px;
-          height: 30px;
+          width: 50px;
+          height: 25px;
           background: #f2f2f2;
           border: 1px solid #DCDFE6;
           margin-right: 10px;

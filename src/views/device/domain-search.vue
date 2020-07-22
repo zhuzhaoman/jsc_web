@@ -8,8 +8,11 @@
     <div class="domain-message">
 
       <div class="operator">
-        <el-input class="input" v-model="domain" placeholder="请指定域类型" clearable></el-input>
-        <el-input class="input"  v-model="domain_id" placeholder="请指定域ID" clearable></el-input>
+        <el-cascader
+          v-model="domainValue"
+          :options="domain"
+          :props="{ expandTrigger: 'hover' }">
+        </el-cascader>
         <el-button size="mini" type="primary" @click="show">立即查询</el-button>
       </div>
 
@@ -20,7 +23,7 @@
         </el-col>
 
         <el-col class="col" :span="8">
-          <div class="label">Property：</div>
+          <div class="label">域类型：</div>
           <div class="property">{{showData.property}}</div>
         </el-col>
 
@@ -49,14 +52,6 @@
             prop="slotType"
             label="槽位类型">
           </el-table-column>
-          <el-table-column
-            prop="slotDecr"
-            label="槽位描述">
-          </el-table-column>
-          <el-table-column
-            prop="slotVersionMsg"
-            label="槽位版本信息">
-          </el-table-column>
         </el-table>
       </div>
 
@@ -70,8 +65,27 @@
     name: "index",
     data() {
       return {
-        domain: '',
-        domain_id: '',
+        domainValue: [],
+        domain: [
+          {
+            value: 'operator',
+            label: 'operator',
+            children: [
+              {
+                value: 1,
+                label: 1
+              },
+              {
+                value: 2,
+                label: 2
+              },
+              {
+                value: 3,
+                label: 3
+              }
+            ]
+          }
+        ],
         showData: {
           domainId: '暂无数据',
           property: '暂无数据',
@@ -94,15 +108,11 @@
               slotIndex: 1,
               slotWorkStatus: 'Ready',
               slotType: 'NGP-PPB3320',
-              slotDecr: '',
-              SlotVersionMsg: ''
             },
             {
               slotIndex: 2,
               slotWorkStatus: 'Ready',
               slotType: 'NGP-PPB3320',
-              slotDecr: '',
-              SlotVersionMsg: ''
             }
           ]
         }

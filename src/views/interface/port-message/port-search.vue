@@ -7,7 +7,16 @@
     <div class="port-status">
 
       <div class="operation">
-        <el-button type="primary" size="mini" plain>刷新端口状态</el-button>
+        <el-select class="select" v-model="value" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        <el-button class="button1" type="primary" size="mini">立即查询</el-button>
+        <el-button class="button2" type="success" size="mini">刷新端口状态</el-button>
       </div>
 
       <div class="port-status-table">
@@ -19,7 +28,7 @@
                 {{ "Q" + ((c -1) * 3 + r) }}
               </div>
               <div v-if="r < 3" class="mask" style="width: 65px; height: 20px;">
-                <img src="@/assets/port/q.jpg" width="65" height="20">
+                <img src="@/assets/port/s.png" width="65" height="20">
               </div>
             </div>
           </div>
@@ -35,7 +44,7 @@
                 {{ "S" + ((c -1) * 3 + r) }}
               </div>
               <div v-if="r < 3" class="mask" style="width: 55px; height: 20px;">
-                <img src="@/assets/port/s.jpg" width="55" height="20">
+                <img src="@/assets/port/s.png" width="55" height="20">
               </div>
             </div>
           </div>
@@ -46,17 +55,17 @@
             <div v-for="r in Q1_row" class="col">
               <div
                 class="q-item"
-                :style="{margin : c === 2 ? '0 10px 0 0': '0', background: ((c + 3) * 3 + r) === 15 ? '#E6A23C' : '#f2f2f2'}">
+                :style="{margin : c === 2 ? '0 10px 0 0': '0', background: ((c + 3) * 3 + r) === 15 ? '#ffd700' : '#f2f2f2'}">
                 <span>{{ "Q" + ((c + 3) * 3 + r) }}</span>
                 <div class="mask-inner">
-                  <div class="one port"></div>
-                  <div class="two port"></div>
-                  <div class="three port"></div>
-                  <div class="four port"></div>
+                  <div class="one port">1</div>
+                  <div class="two port">2</div>
+                  <div class="three port">3</div>
+                  <div class="four port">4</div>
                 </div>
               </div>
               <div v-if="r < 3" class="mask" style="width: 65px; height: 20px;">
-                <img src="@/assets/port/q.jpg" width="65" height="20">
+                <img src="@/assets/port/s.png" width="65" height="20">
               </div>
             </div>
           </div>
@@ -91,7 +100,18 @@
         Q1_row: [1, 2, 3],
         Q1_col: [1, 2, 3, 4],
         S_row: [1, 2, 3],
-        S_col: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        S_col: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        options: [
+          {
+            value: '1',
+            label: '槽位1'
+          },
+          {
+            value: '2',
+            label: '槽位2'
+          }
+        ],
+        value: '1'
       }
     },
     mounted() {

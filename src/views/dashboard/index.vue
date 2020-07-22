@@ -60,7 +60,7 @@
         </div>
         <div class="warning-group-right">
           <count-to :start-val="0" :end-val="6" :duration="5000" class="count" />
-          <div class="title">端口错报</div>
+          <div class="title">端口异常</div>
         </div>
       </div>
 

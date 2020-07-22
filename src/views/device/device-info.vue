@@ -43,8 +43,8 @@
       <el-row class="row">
         <el-col :span="12">
           <div class="col">
-            <div class="label">最大功率：</div>
-            <el-tag class="max-power-num">0</el-tag>
+            <div class="label">正常风扇数：</div>
+            <el-tag class="normal-fan-num">0</el-tag>
           </div>
         </el-col>
         <el-col :span="12">
@@ -58,29 +58,14 @@
       <el-row class="row">
         <el-col :span="12">
           <div class="col">
-            <div class="label">最大风扇数：</div>
-            <el-tag class="max-fan-num">0</el-tag>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <div class="col">
-            <div class="label">正常风扇数：</div>
-            <el-tag class="normal-fan-num">0</el-tag>
-          </div>
-        </el-col>
-      </el-row>
-
-      <el-row class="row">
-        <el-col :span="12">
-          <div class="col">
             <div class="label">最大内存：</div>
             <el-tag class="max-memory">3877【MB】</el-tag>
           </div>
         </el-col>
         <el-col :span="12">
           <div class="col">
-            <div class="label">GuiServerIP：</div>
-            <el-tag class="gui-server-ip">OFF</el-tag>
+            <div class="label">已运行：</div>
+            <el-tag class="run-time" type="success">1days 19hours 1mins</el-tag>
           </div>
         </el-col>
       </el-row>
@@ -93,12 +78,6 @@
               <svg-icon icon-class="date" class-name='date-icon' />
               2020-07-15 10:15:23
             </div>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <div class="col">
-            <div class="label">已运行：</div>
-            <el-tag class="run-time" type="success">1days 19hours 1mins</el-tag>
           </div>
         </el-col>
       </el-row>

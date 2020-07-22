@@ -20,9 +20,8 @@
       display: flex;
       justify-content: flex-start;
 
-      .input {
-        width: 200px;
-        margin-right: 20px;
+      button {
+        margin-left: 10px;
       }
     }
 
@@ -30,11 +29,6 @@
       margin-top: 20px;
       padding: 20px;
       border: 1px solid #DCDFE6;
-    }
-
-    .domain:hover {
-      box-shadow: 0 1px 6px rgba(0,0,0,.25);
-      border-color: #eee;
     }
 
     .col {
