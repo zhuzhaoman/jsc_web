@@ -1,78 +1,15 @@
 <template>
   <div class="dashboard-container">
-    <!--    <component :is="currentRole" />-->
+    <!-- <component :is="currentRole" /> -->
 
     <!-- 异常信息 -->
     <div class="container-top">
-      <div class="warning-group" @click="showWarning(1)">
-        <div class="warning-group-left"  style="background: #67C23A;">
-          <svg-icon icon-class="fan" class-name='warning-icon' />
-        </div>
-        <div class="warning-group-right">
-          <count-to :start-val="0" :end-val="33" :duration="5000" class="count" />
-          <div class="title">风扇异常</div>
-        </div>
-      </div>
-
-      <div class="warning-group" @click="showWarning(2)">
-        <div class="warning-group-left" style="background: #E6A23C">
-          <svg-icon icon-class="power-supply"  class-name='warning-icon' />
-        </div>
-        <div class="warning-group-right">
-          <count-to :start-val="0" :end-val="55" :duration="5000" class="count" />
-          <div class="title">电源异常</div>
-        </div>
-      </div>
-
-      <div class="warning-group" @click="showWarning(3)">
-        <div class="warning-group-left" style="background: #F56C6C">
-          <svg-icon icon-class="temperature"  class-name='warning-icon' />
-        </div>
-        <div class="warning-group-right">
-          <count-to :start-val="0" :end-val="6" :duration="5000" class="count" />
-          <div class="title">温度异常</div>
-        </div>
-      </div>
-
-      <div class="warning-group" @click="showWarning(4)">
-        <div class="warning-group-left" style="background: #409EFF">
-          <svg-icon icon-class="card"  class-name='warning-icon' />
-        </div>
-        <div class="warning-group-right">
-          <count-to :start-val="0" :end-val="13" :duration="5000" class="count" />
-          <div class="title">板卡异常</div>
-        </div>
-      </div>
-
-      <div class="warning-group" @click="showWarning(5)">
-        <div class="warning-group-left" style="background: #2db7f5">
-          <svg-icon icon-class="port"  class-name='warning-icon' />
-        </div>
-        <div class="warning-group-right">
-          <count-to :start-val="0" :end-val="8" :duration="5000" class="count" />
-          <div class="title">端口状态变化</div>
-        </div>
-      </div>
-
-      <div class="warning-group" @click="showWarning(6)">
-        <div class="warning-group-left" style="background: #543CCD">
-          <svg-icon icon-class="port-error"  class-name='warning-icon' />
-        </div>
-        <div class="warning-group-right">
-          <count-to :start-val="0" :end-val="6" :duration="5000" class="count" />
-          <div class="title">端口异常</div>
-        </div>
-      </div>
-
-      <div class="warning-group" @click="showWarning(7)">
-        <div class="warning-group-left" style="background: #E1E410">
-          <svg-icon icon-class="capacity"  class-name='warning-icon' />
-        </div>
-        <div class="warning-group-right">
-          <count-to :start-val="0" :end-val="156" :duration="5000" class="count" />
-          <div class="title">五元容量警告</div>
-        </div>
-      </div>
+      <warning-group style="width: 14%" :flag="1" :not-view="notViewList[0]" background-color="#67C23A" icon-class="fan" :start-value="0" :end-value="errorNumList[0]" title="风扇异常" />
+      <warning-group style="width: 14%" :flag="2" :not-view="notViewList[1]" background-color="#E6A23C" icon-class="power-supply" :start-value="0" :end-value="errorNumList[1]" title="电源异常" />
+      <warning-group style="width: 14%" :flag="3" :not-view="notViewList[2]" background-color="#F56C6C" icon-class="temperature" :start-value="0" :end-value="errorNumList[2]" title="温度异常" />
+      <warning-group style="width: 14%" :flag="4" :not-view="notViewList[3]" background-color="#409EFF" icon-class="card" :start-value="0" :end-value="errorNumList[3]" title="板卡异常" />
+      <warning-group style="width: 14%" :flag="5" :not-view="notViewList[4]" background-color="#2db7f5" icon-class="port" :start-value="0" :end-value="errorNumList[4]" title="端口状态变化" />
+      <warning-group style="width: 14%" :flag="6" :not-view="notViewList[5]" background-color="#543CCD" icon-class="port-error" :start-value="0" :end-value="errorNumList[5]" title="端口异常" />
     </div>
 
     <!-- 主体位置 -->
@@ -86,6 +23,52 @@
       width="50%"
       :before-close="handleClose">
 
+      <div class="block" v-if="showErrorIndex === 3">
+        <label>温度阈值(℃)：</label>
+        <el-input
+          class="input"
+          placeholder="请输入内容"
+          :disabled="true">
+        </el-input>
+        <el-button size="small" type="primary" @click="open1">修改阈值</el-button>
+      </div>
+
+      <div class="block" v-if="showErrorIndex === 4">
+        <label>CPU使用率告警值(%)：</label>
+        <el-input
+          class="input"
+          placeholder="请输入内容"
+          :disabled="true">
+        </el-input>
+        <el-button size="small" type="primary" @click="open1">修改阈值</el-button>
+
+        <label style="margin-left: 20px;">内存使用率告警值：(%)：</label>
+        <el-input
+          class="input"
+          placeholder="请输入内容"
+          :disabled="true">
+        </el-input>
+        <el-button size="small" type="primary" @click="open1">修改阈值</el-button>
+      </div>
+
+      <div class="block" v-if="showErrorIndex === 6">
+        <label>丢包率(10^-6)：</label>
+        <el-input
+          class="input"
+          placeholder="请输入内容"
+          :disabled="true">
+        </el-input>
+        <el-button size="small" type="primary" @click="open1">修改阈值</el-button>
+
+        <label style="margin-left: 20px;">错包率：(10^-6)：</label>
+        <el-input
+          class="input"
+          placeholder="请输入内容"
+          :disabled="true">
+        </el-input>
+        <el-button size="small" type="primary" @click="open1">修改阈值</el-button>
+      </div>
+
       <div class="block">
         <el-date-picker
           v-model="searchDate"
@@ -97,7 +80,6 @@
           end-placeholder="结束日期"
           :picker-options="pickerOptions">
         </el-date-picker>
-
         <el-button
           type="primary"
           size="small"
@@ -138,9 +120,9 @@
       </el-table>
 
       <el-pagination style="margin-top: 20px;"
-        background
-        layout="prev, pager, next"
-        :total="100">
+                     background
+                     layout="prev, pager, next"
+                     :total="100">
       </el-pagination>
 
       <span slot="footer" class="dialog-footer">
@@ -156,11 +138,13 @@
   import adminDashboard from './admin'
   import editorDashboard from './editor'
   import Chart from '../../components/Charts/LineMarker'
-  import CountTo from 'vue-count-to'
-
+  import WarningGroup from '../../components/Custom/WarningGroup'
+  import SockJS from "sockjs-client";
+  import Stomp from "stompjs";
+  let socket;
   export default {
     name: 'Dashboard',
-    components: { adminDashboard, editorDashboard, Chart, CountTo },
+    components: { adminDashboard, editorDashboard, Chart, WarningGroup },
     data() {
       return {
         currentRole: 'adminDashboard',
@@ -196,22 +180,58 @@
               }
             }]
         },
-        searchDate: []
+        searchDate: [],
+        showErrorIndex: 1,
+        temperatureValue: 60,
+        notViewList: [null, null, null, null, null, null],
+        errorNumList: [100, 29, 36, 45, 66, 150]
       }
     },
-    computed: {
-      ...mapGetters([
-        'roles'
-      ])
+    mounted() {
+      console.log("+++++++++++++++++++")
     },
     created() {
-      if (!this.roles.includes('admin')) {
-        this.currentRole = 'editorDashboard'
-      }
+
+      let stompClient = null;
+      let that = this;
+
+      // 建立连接对象
+      socket= new SockJS ('http://localhost:8080/websocket');
+      // 获取STOMP子协议的客户端对象
+      stompClient = Stomp.over(socket);
+
+      // 向服务器发送websocket连接并发送CONNECT帧
+      stompClient.connect ({}, function (frame) {
+
+        // 指定订阅
+        stompClient.subscribe('/user/admin/error', function (res) {
+          let data = JSON.parse(res.body)
+          console.log("====接收到指定订阅(/user/admin/error)返回的数据====")
+          console.log(data)
+          let category = data.data.category -1
+
+          let notViewList = that.notViewList
+          let notView = notViewList[category] + 1
+          notViewList.splice(category, 1, notView)
+
+
+          let errorNumList = that.errorNumList
+          let errorNum = errorNumList[category] + 1
+          errorNumList.splice(category, 1, errorNum)
+
+          that.notViewList = notViewList
+          that.errorNumList = errorNumList
+        })
+      });
     },
     methods: {
-      showWarning(index) {
-        console.log(index)
+      showWarning(flag) {
+        this.showErrorIndex = flag
+
+        let notViewList = this.notViewList
+        let notView = notViewList[flag - 1] + 1
+        notViewList.splice(flag - 1, 1, null)
+
         this.dialogVisible = true
         this.warningList = [
           {
@@ -244,6 +264,9 @@
           });
         });
       }
+    },
+    beforeDestroy() {
+      socket.close()
     }
   }
 </script>

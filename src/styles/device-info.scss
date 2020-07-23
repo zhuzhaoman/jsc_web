@@ -30,6 +30,10 @@
       display: flex;
       align-items: center;
 
+      .label {
+        width: 85px;
+      }
+
       .system-time {
         padding: 8px 15px;
         border-radius: 5px;

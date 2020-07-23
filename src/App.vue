@@ -29,9 +29,9 @@
         // 全局订阅
         stompClient.subscribe('/app/all', function (res) {
           let data = JSON.parse(res.body)
-          console.log("====接收到全局订阅(/app/all)返回的数据====")
+          console.log("====接收到指定订阅(/app/all)返回的数据====")
           that.$notify({
-            title: '警告',
+            title: '成功',
             message: data.msg,
             type: 'success'
           });
@@ -42,9 +42,9 @@
           let data = JSON.parse(res.body)
           console.log("====接收到指定订阅(/topic/all)返回的数据====")
           that.$notify({
-            title: '警告',
-            message: data.msg,
-            type: 'warning'
+            title: data.data.title,
+            message: data.data.msg,
+            type: data.data.type
           });
         })
       });

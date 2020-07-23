@@ -13,13 +13,15 @@
       <el-row>
         <el-col :span="12">
           <div class="col">
-            <div class="label">设备ID：</div>
+            <div class="label" style="display: flex;justify-content: flex-start;">
+              设<div style="width: 12px" />备<div style="width: 12px" />ID：
+            </div>
             <el-tag class="equ-id">1</el-tag>
           </div>
         </el-col>
         <el-col :span="12">
           <div class="col">
-            <div class="label">设备名称：</div>
+            <div class="label">设 备 名 称：</div>
             <el-tag class="equ-name">3320</el-tag>
           </div>
         </el-col>
@@ -28,13 +30,13 @@
       <el-row class="row">
         <el-col :span="12">
           <div class="col">
-            <div class="label">设备类型：</div>
+            <div class="label">设 备 类 型：</div>
             <el-tag class="equ-type" >BOX</el-tag>
           </div>
         </el-col>
         <el-col :span="12">
           <div class="col">
-            <div class="label">软件版本：</div>
+            <div class="label">软 件 版 本：</div>
             <el-tag class="software-version">main_version=v3.0.0</el-tag>
           </div>
         </el-col>
@@ -49,7 +51,7 @@
         </el-col>
         <el-col :span="12">
           <div class="col">
-            <div class="label">正常功率：</div>
+            <div class="label">正 常 功 率：</div>
             <el-tag class="normal-power-num">0</el-tag>
           </div>
         </el-col>
@@ -58,13 +60,15 @@
       <el-row class="row">
         <el-col :span="12">
           <div class="col">
-            <div class="label">最大内存：</div>
+            <div class="label">最 大 内 存：</div>
             <el-tag class="max-memory">3877【MB】</el-tag>
           </div>
         </el-col>
         <el-col :span="12">
           <div class="col">
-            <div class="label">已运行：</div>
+            <div class="label" style="display: flex;justify-content: flex-start;">
+              已<div style="width: 13px" />运<div style="width: 13px" />行：
+            </div>
             <el-tag class="run-time" type="success">1days 19hours 1mins</el-tag>
           </div>
         </el-col>
@@ -73,7 +77,7 @@
       <el-row class="row">
         <el-col :span="12">
           <div class="col">
-            <div class="label">系统时间：</div>
+            <div class="label">系 统 时 间：</div>
             <div class="system-time">
               <svg-icon icon-class="date" class-name='date-icon' />
               2020-07-15 10:15:23
@@ -163,6 +167,9 @@
           }
         ]
       }
+    },
+    mounted() {
+      console.log("+++++++++++++++++++")
     }
   }
 </script>
