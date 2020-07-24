@@ -19,59 +19,10 @@
         <el-button class="button2" type="success" size="mini">刷新端口状态</el-button>
       </div>
 
-      <div class="port-status-table">
-
-        <div class="block" style="padding-right: 20px;display: flex;">
-          <div v-for="c in Q1_col" class="row">
-            <div v-for="r in Q1_row" class="col">
-              <div class="q-item" :style="{margin: c === 2 ? '0 10px 0 0' : '', background: ((c -1) * 3 + r) === 1 ? '#67C23A' : '#f2f2f2'}">
-                {{ "Q" + ((c -1) * 3 + r) }}
-              </div>
-              <div v-if="r < 3" class="mask" style="width: 65px; height: 20px;">
-                <img src="@/assets/port/s.png" width="65" height="20">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="block" style="padding-right: 20px; display: flex;">
-          <div v-for="c in S_col" class="row">
-            <div v-for="r in S_row" class="col">
-              <div
-                class="s-item"
-                :style="{margin : (c % 4 === 0) && (c !== 12) ? '0 10px 0 0': '0', background: '#f2f2f2'}"
-              >
-                {{ "S" + ((c -1) * 3 + r) }}
-              </div>
-              <div v-if="r < 3" class="mask" style="width: 55px; height: 20px;">
-                <img src="@/assets/port/s.png" width="55" height="20">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="block" style="padding-right: 20px;display: flex;">
-          <div v-for="c in Q1_col" class="row">
-            <div v-for="r in Q1_row" class="col">
-              <div
-                class="q-item"
-                :style="{margin : c === 2 ? '0 10px 0 0': '0', background: ((c + 3) * 3 + r) === 15 ? '#ffd700' : '#f2f2f2'}">
-                <span>{{ "Q" + ((c + 3) * 3 + r) }}</span>
-                <div class="mask-inner">
-                  <div class="one port">1</div>
-                  <div class="two port">2</div>
-                  <div class="three port">3</div>
-                  <div class="four port">4</div>
-                </div>
-              </div>
-              <div v-if="r < 3" class="mask" style="width: 65px; height: 20px;">
-                <img src="@/assets/port/s.png" width="65" height="20">
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
+<!--      <Image1 :q1_col="Q1_col" :q1_row="Q1_row" :s_col="S_col" :s_row="S_row" :q2_col="Q1_col" :q2_row="Q1_row" />-->
+<!--      <br>-->
+<!--      <br>-->
+      <Image2 :q1_col="Q1_col" :q1_row="Q1_row" :s_col="S_col" :s_row="S_row" :q2_col="Q1_col" :q2_row="Q1_row"></Image2>
 
       <div class="port-status-mark">
         <div class="block">
@@ -93,8 +44,11 @@
 </template>
 
 <script>
+  import Image1 from '../../../components/Custom/DeviceImages/image1'
+  import Image2 from '../../../components/Custom/DeviceImages/image2'
   export default {
     name: 'PortSearch',
+    components: { Image1,  Image2},
     data() {
       return {
         Q1_row: [1, 2, 3],
