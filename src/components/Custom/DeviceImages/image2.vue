@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <div class="port-status-table">
-
       <div class="table-border">
 
         <div class="left">
@@ -42,7 +41,7 @@
             <div v-for="r in Q2_row" class="col">
               <div
                 class="q-item"
-                :style="{margin : c === 2 ? '0 10px 0 0': '0 3px 0 0', background: ((c + 3) * 3 + r) === 15 ? '#039BE5' : 'rgba(0,0,0,0.3)'}">
+                :style="{margin : c === 2 ? '0 10px 0 0': '0 3px 0 0', background: ((c + 3) * 3 + r) === 15 ? '#faa755' : 'rgba(0,0,0,0.3)'}">
                 <span>{{ "Q" + ((c + 3) * 3 + r) }}</span>
                 <div class="mask-inner">
                   <div class="one port">1</div>
@@ -64,7 +63,21 @@
         </div>
 
       </div>
+    </div>
 
+    <div class="port-status-mark">
+      <div class="block">
+        <div class="success" />
+        <div class="label">UP</div>
+      </div>
+      <div class="block">
+        <div class="four_ten" />
+        <div class="label">甩纤</div>
+      </div>
+      <div class="block">
+        <div class="error" />
+        <div class="label">DOWN</div>
+      </div>
     </div>
   </div>
 </template>
@@ -90,17 +103,21 @@
 
 <style lang="scss" scoped>
   .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
     .port-status-table {
       display: flex;
       justify-content: center;
       align-items: center;
       border: 10px solid #ffffff;
-      border-radius: 10px;
+      border-radius: 30px;
       background: #007bc3;
       -moz-box-shadow:7px 7px 20px #007bc3;
       -webkit-box-shadow:7px 7px 20px #007bc3;
-      box-shadow:7px 7px 20px #333333;
+      box-shadow: 1px 1px 10px #999999;
 
       .table-border {
         height: 150px;
@@ -112,7 +129,7 @@
         color: #f2f2f2;
         margin: 20px;
         border: 1px solid #cccccc;
-        border-radius: 10px;
+        border-radius: 15px;
         .left {
           display: flex;
           flex-direction: column;
@@ -168,6 +185,7 @@
           width: 60px;
           height: 27px;
           transition: all .5s linear;
+          border: 1px solid rgba(0,0,0,.3);
 
           .mask-inner {
             position: absolute;
@@ -223,11 +241,53 @@
           width: 50px;
           height: 27px;
           transition: all .5s linear;
-
+          border: 1px solid rgba(0,0,0,.3);
         }
       }
 
 
+    }
+
+    .port-status-mark {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      padding: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #606266;
+      margin-top: 20px;
+
+      .block {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 30px;
+
+        .success {
+          width: 50px;
+          height: 25px;
+          background: #00e676;
+          border: 1px solid rgba(0,0,0,.1);
+          margin-right: 10px;
+        }
+
+        .four_ten {
+          width: 50px;
+          height: 25px;
+          background: #faa755;
+          border: 1px solid rgba(0,0,0,.1);
+          margin-right: 10px;
+        }
+
+        .error {
+          width: 50px;
+          height: 25px;
+          background: rgba(0,0,0,.3);
+          border: 1px solid rgba(0,0,0,.1);
+          margin-right: 10px;
+        }
+      }
     }
 
   }

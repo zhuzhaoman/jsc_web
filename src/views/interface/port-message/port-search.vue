@@ -24,20 +24,7 @@
 <!--      <br>-->
       <Image2 :q1_col="Q1_col" :q1_row="Q1_row" :s_col="S_col" :s_row="S_row" :q2_col="Q1_col" :q2_row="Q1_row"></Image2>
 
-      <div class="port-status-mark">
-        <div class="block">
-          <div class="success" />
-          <div class="label">UP</div>
-        </div>
-        <div class="block">
-          <div class="four_ten" />
-          <div class="label">甩纤</div>
-        </div>
-        <div class="block">
-          <div class="error" />
-          <div class="label">DOWN</div>
-        </div>
-      </div>
+
     </div>
 
   </div>
