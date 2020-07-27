@@ -128,7 +128,7 @@
         font-size: 12px;
         color: #f2f2f2;
         margin: 20px;
-        border: 1px solid #ffffff;
+        border: 1px solid #CCCCCC;
         border-radius: 15px;
 
         .left {
