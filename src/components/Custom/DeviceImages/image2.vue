@@ -114,22 +114,23 @@
       align-items: center;
       border: 10px solid #ffffff;
       border-radius: 30px;
-      background: #007bc3;
-      -moz-box-shadow:7px 7px 20px #007bc3;
-      -webkit-box-shadow:7px 7px 20px #007bc3;
+      background: #1890ff;
+      -moz-box-shadow: 1px 1px 10px #999999;
+      -webkit-box-shadow: 1px 1px 10px #999999;
       box-shadow: 1px 1px 10px #999999;
 
       .table-border {
         height: 150px;
         display: flex;
         align-items: center;
-        background: #007bc3;
+        background: #1890ff;
         box-sizing: border-box;
         font-size: 12px;
         color: #f2f2f2;
         margin: 20px;
-        border: 1px solid #cccccc;
+        border: 1px solid #ffffff;
         border-radius: 15px;
+
         .left {
           display: flex;
           flex-direction: column;
@@ -146,7 +147,6 @@
             width: 20px;
             height: 20px;
             fill: #d5e0e2 !important;
-
           }
         }
 
@@ -244,8 +244,6 @@
           border: 1px solid rgba(0,0,0,.3);
         }
       }
-
-
     }
 
     .port-status-mark {
