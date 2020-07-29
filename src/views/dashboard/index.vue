@@ -141,6 +141,7 @@
   import WarningGroup from '../../components/Custom/WarningGroup'
   import SockJS from "sockjs-client";
   import Stomp from "stompjs";
+  import { getErrorCount } from '../../api/dashboard'
   let socket;
   export default {
     name: 'Dashboard',
@@ -184,11 +185,24 @@
         showErrorIndex: 1,
         temperatureValue: 60,
         notViewList: [null, null, null, null, null, null],
-        errorNumList: [100, 29, 36, 45, 66, 150]
+        errorNumList: [0, 0, 0, 0, 0, 0],
+
       }
     },
     mounted() {
-      console.log("+++++++++++++++++++")
+      getErrorCount().then(res => {
+        let data = res.data
+        let notViewList = []
+        let errorNumList = []
+
+        data.forEach((item, index) => {
+          notViewList.push(item.notLook)
+          errorNumList.push(item.count)
+        })
+
+        this.notViewList = notViewList
+        this.errorNumList = errorNumList
+      })
     },
     created() {
 
