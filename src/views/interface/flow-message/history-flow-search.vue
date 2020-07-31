@@ -6,10 +6,10 @@
       <el-input
         class="input"
         placeholder="请输入内容"
-        v-model="flowValue"
+        v-model="flowCycle.cycle"
         :disabled="true">
       </el-input>
-      <el-button size="small" type="primary" @click="open1">修改存储周期</el-button>
+      <el-button size="small" type="primary" @click="onUpdateCycle">修改存储周期</el-button>
       <el-button size="small" type="danger" @click="open">清空历史流量</el-button>
     </div>
 
@@ -23,13 +23,23 @@
 
 <script>
   import Chart from '../../../components/Charts/LineMarker'
+  import { getCycle, post, updateCycle } from '../../../api/flow-message'
   export default {
     name: "history-flow-search",
     components: { Chart },
     data() {
       return {
-        flowValue: 90
+        flowCycle: {id: 1, cycle: 90}
       }
+    },
+    mounted() {
+      getCycle().then(res => {
+        let data = res.data
+        this.flowCycle = data
+      })
+      post().then(res => {
+        console.log(res)
+      })
     },
     methods: {
       open() {
@@ -49,24 +59,24 @@
           });
         });
       },
-      open1() {
+      onUpdateCycle() {
         this.$prompt('请输入历史流量存储周期', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           inputPattern: /^(?:[1-8][0-9]?|90)$/,
           inputErrorMessage: '请输入1-90的数字'
         }).then(({ value }) => {
-          this.flowValue = value
-          this.$message({
-            type: 'success',
-            message: '修改成功'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消修改'
-          });
-        });
+
+          let flowCycle = this.flowCycle
+
+          updateCycle({ id: "1", cycle: 1 }).then(res => {
+            this.flowCycle.cycle = value
+            this.$message({
+              type: 'success',
+              message: '修改成功'
+            });
+          })
+        })
       }
     }
   }
