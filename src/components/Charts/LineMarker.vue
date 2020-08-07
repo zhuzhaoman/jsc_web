@@ -5,7 +5,8 @@
       <el-cascader
         v-model="domainValue"
         :options="domain"
-        :props="{ expandTrigger: 'hover' }">
+        :props="{ expandTrigger: 'hover' }"
+        @change="domainChange">
       </el-cascader>
 
       <el-select class="change" v-model="value" placeholder="请选择" @change="selectChange(value)">
@@ -13,8 +14,7 @@
           v-for="item in options"
           :key="item.value"
           :label="item.label"
-          :value="item.value"
-        />
+          :value="item.value"/>
       </el-select>
 
       <el-date-picker
@@ -23,6 +23,7 @@
         class="day"
         type="date"
         placeholder="选择日期"
+        @change="dateChange"
       />
 
       <el-date-picker
@@ -31,7 +32,7 @@
         class="month"
         type="month"
         placeholder="选择月"
-      />
+        @change="monthChange"/>
     </div>
     <div :id="id" :class="className" :style="{width:width}" />
   </div>
@@ -40,7 +41,8 @@
 <script>
   import echarts from 'echarts'
   import resize from './mixins/resize'
-
+  import moment from 'moment'
+  import { getHistoryFlow, getHistoryFlowByDayRange, getHistoryFlowByQuarterRange } from '../../api/flow-message'
   export default {
     mixins: [resize],
     props: {
@@ -107,8 +109,10 @@
       }
     },
     mounted() {
-      this.showDay();
+      this.value1 = moment(new Date()).format("YYYY-MM-DD")
+      this.value2 = moment(new Date()).format("YYYY-MM")
       this.initChart()
+      this.showDay(this.value1);
     },
     beforeDestroy() {
       if (!this.chart) {
@@ -119,87 +123,148 @@
     },
     methods: {
       /**
-       * 显示天
-       **/
-      showDay() {
-        const date = [];
-        const input = [];
-        const output = [];
-
-        for (let hour = 1; hour <= 24; hour++) {
-          for (let min = 10; min <= 60;) {
-            const member1 = this.random(90, 100);
-            const member2 = this.random(85, 95);
-            date.push('7.1 ' + hour + ':'+ min +':00');
-            input.push(member1);
-            output.push(member2)
-            min+=10
-          }
-        }
-
-        this.date = date;
-        this.input = input;
-        this.output = output
-      },
-      /**
-       * 显示月
-       **/
-      showMonth() {
-        const date = [];
-        const input = [];
-        const output = [];
-
-        for (let day = 1; day < 31; day++) {
-          for (let hour = 1; hour <= 24; hour++) {
-            const member1 = this.random(90, 100);
-            const member2 = this.random(85, 95);
-            date.push(7 + '.' + day + ' ' + hour + ':00');
-            input.push(member1);
-            output.push(member2)
-          }
-        }
-
-        this.date = date;
-        this.input = input;
-        this.output = output
-      },
-      /**
-       * 显示季度
+       * 选择域
        */
-      showQuarter() {
-        const date = [];
-        const input = [];
-        const output = [];
-
-        for (let month = 5; month <= 7; month++) {
-          for (let day = 1; day < 31; day++) {
-            for (let hour = 1; hour <= 24; hour++) {
-              const member1 = this.random(90, 100);
-              const member2 = this.random(85, 95);
-              date.push(month + '.' + day + ' ' + hour + ':00');
-              input.push(member1);
-              output.push(member2)
-            }
-          }
+      domainChange(domain) {
+        this.domainValue = domain
+        let value = this.value
+        if (value === 'day') {
+          let date = moment(this.value1).format("YYYY-MM-DD")
+          this.showDay(date)
+        } else if (value === 'month') {
+          let date = moment(this.value2).format("YYYY-MM")
+          this.showMonth(date)
+        } else {
+          this.showQuarter()
         }
-
-        this.date = date;
-        this.input = input;
-        this.output = output
       },
+      /**
+       * 选择天、月还是季度展示
+       */
       selectChange(value) {
         if (value === 'day') {
-          this.showDay()
+          let date = moment(this.value1).format("YYYY-MM-DD")
+          this.showDay(date)
         } else if (value === 'month') {
-          this.showMonth()
+          let date = moment(this.value2).format("YYYY-MM")
+          this.showMonth(date)
         } else {
           this.showQuarter()
         }
         this.initChart()
       },
-      random(m, n) {
-        return Math.floor(Math.random() * (n - m)) + m
+      /**
+       * 选择显示日期数据，以天为单位
+       */
+      dateChange(date) {
+        let dateObject = moment(date).format("YYYY-MM-DD")
+        this.showDay(dateObject)
       },
+      /**
+       * 选择显示日期数据，以月为单位
+       */
+      monthChange(date) {
+        let dateObject = moment(date).format("YYYY-MM")
+        this.showMonth(dateObject)
+      },
+      /**
+       * 显示天
+       **/
+      showDay(dateObject) {
+        const dateList = [];
+        const inputList = [];
+        const outputList = [];
+
+        let date = dateObject.toLocaleString()
+
+        let startDay = moment(new Date(new Date(moment(date).startOf('day')).getTime())).valueOf()
+        let endDay = moment(new Date(new Date(moment(date).endOf('day')).getTime())).valueOf()
+        let domain = this.domainValue[0]
+        let domainId = this.domainValue[1]
+
+        getHistoryFlow({domain: domain, domainId: domainId, startTime: startDay, endTime: endDay}).then(res => {
+          let historyList = res.data
+          for (let i = 0; i < historyList.length; i++) {
+            inputList.push(historyList[i].rx)
+            outputList.push(historyList[i].tx)
+            dateList.push(moment(historyList[i].createTime).format("MM-DD HH:mm:ss"))
+          }
+
+          this.date = dateList;
+          this.input = inputList;
+          this.output = outputList
+
+          this.initChart()
+        })
+      },
+      /**
+       * 显示月
+       **/
+      showMonth(dateObject) {
+
+        const dateList = [];
+        const inputList = [];
+        const outputList = [];
+
+        let date = dateObject.toLocaleString()
+        let firstDay = moment(date).startOf('month')
+        let lastDay = moment(date).endOf('month')
+
+        let startDay = moment(new Date(new Date(firstDay).getTime())).valueOf()
+        let endDay = moment(new Date(new Date(lastDay).getTime() + 24 * 60 * 60 * 1000 - 1)).valueOf()
+
+
+        let domain = this.domainValue[0]
+        let domainId = this.domainValue[1]
+
+
+        getHistoryFlowByDayRange({domain: domain, domainId: domainId, startTime: startDay, endTime: endDay}).then(res => {
+          let historyList = res.data
+          for (let i = 0; i < historyList.length; i++) {
+            inputList.push(historyList[i].rx)
+            outputList.push(historyList[i].tx)
+            dateList.push(moment(historyList[i].createTime).format("MM-DD HH:mm:ss"))
+          }
+
+          this.date = dateList;
+          this.input = inputList;
+          this.output = outputList
+
+          this.initChart()
+        })
+      },
+      /**
+       * 显示季度
+       */
+      showQuarter() {
+        const dateList = [];
+        const inputList = [];
+        const outputList = [];
+
+        let date = moment(new Date()).format("YYYY-MM-DD").toLocaleString()
+        let startDay = moment().subtract(3, "months").startOf('day')
+        let endDay = moment(new Date(new Date(moment(date).endOf('day')).getTime())).valueOf()
+        let domain = this.domainValue[0]
+        let domainId = this.domainValue[1]
+
+        getHistoryFlowByQuarterRange({domain: domain, domainId: domainId, startTime: startDay, endTime: endDay}).then(res => {
+          let historyList = res.data
+          for (let i = 0; i < historyList.length; i++) {
+            inputList.push(historyList[i].rx)
+            outputList.push(historyList[i].tx)
+            dateList.push(moment(historyList[i].createTime).format("MM-DD HH:mm:ss"))
+          }
+
+          this.date = dateList;
+          this.input = inputList;
+          this.output = outputList
+
+          this.initChart()
+        })
+      },
+      /**
+       * 初始化统计图
+       */
       initChart() {
         const that = this;
         this.chart = echarts.init(document.getElementById(this.id));
@@ -230,7 +295,7 @@
             itemWidth: 14,
             itemHeight: 5,
             itemGap: 13,
-            data: ['输入流量', '输出流量'],
+            data: ['输出流量','输入流量'],
             right: '4%',
             textStyle: {
               fontSize: 12,
@@ -280,7 +345,7 @@
           }],
           series: [
             {
-              name: '输入流量',
+              name: '输出流量',
               type: 'line',
               smooth: true,
               symbol: 'circle',
@@ -309,13 +374,12 @@
                   color: 'rgb(0,136,212)',
                   borderColor: 'rgba(0,136,212,0.2)',
                   borderWidth: 12
-
                 }
               },
               data: that.input
             },
             {
-              name: '输出流量',
+              name: '输入流量',
               type: 'line',
               smooth: true,
               symbol: 'circle',
@@ -348,6 +412,23 @@
                 }
               },
               data: that.output
+            }
+          ],
+          dataZoom: [
+            {
+              type: 'slider',
+              show: true,
+              start: 0,
+              end: 10,
+              fillerColor:"rgba(0,0,0,0.2)",
+              throttle:100,
+              backgroundColor:"rgba(47,69,84,0)",
+            },
+            {
+              type: 'inside',
+              show: true,
+              start: 0,
+              end: 10
             }
           ]
         })

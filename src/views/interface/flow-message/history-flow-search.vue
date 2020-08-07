@@ -64,8 +64,9 @@ export default {
         inputErrorMessage: '请输入1-90的数字'
       }).then(({ value }) => {
         const flowCycle = this.flowCycle;
-
-        updateCycle({ username: 'root', password: 'password' }).then(res => {
+        console.log(value)
+        console.log(parseInt(value))
+        updateCycle({ id: flowCycle.id, cycle: parseInt(value) }).then(res => {
           this.flowCycle.cycle = value;
           this.$message({
             type: 'success',

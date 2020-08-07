@@ -20,8 +20,8 @@
     <el-dialog
       title="异常信息"
       :visible.sync="dialogVisible"
-      width="50%"
       :before-close="handleClose"
+      width="50%"
     >
 
       <div v-if="showErrorIndex === 3" class="block">
@@ -102,24 +102,21 @@
       <el-table
         :data="warningList"
         border
+        v-loading="loading"
         style="width: 100%"
       >
-        <el-table-column
-          prop="id"
-          label="ID"
-          width="100"
-        />
         <el-table-column
           prop="title"
           label="异常名称"
         />
         <el-table-column
-          prop="message"
+          prop="content"
           label="异常内容"
         />
         <el-table-column
-          prop="date"
+          prop="createTime"
           label="上报时间"
+          :formatter="dateFormat"
         />
       </el-table>
 
@@ -127,165 +124,245 @@
         style="margin-top: 20px;"
         background
         layout="prev, pager, next"
-        :total="100"
+        :total="total"
+        :page-size="5"
+        :current-page.sync="currentPage"
+        @current-change="handleCurrentChange"
       />
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button @click="handleClose">取 消</el-button>
+        <el-button type="primary" @click="handleClose">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import adminDashboard from './admin'
-import editorDashboard from './editor'
-import Chart from '../../components/Charts/LineMarker'
-import WarningGroup from '../../components/Custom/WarningGroup'
-import SockJS from 'sockjs-client'
-import Stomp from 'stompjs'
-import { getErrorCount } from '../../api/dashboard'
-import { updateCycle } from '../../api/flow-message'
-let socket;
-export default {
-  name: 'Dashboard',
-  components: { adminDashboard, editorDashboard, Chart, WarningGroup },
-  data() {
-    return {
-      currentRole: 'adminDashboard',
-      warningList: [],
-      dialogVisible: false,
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end])
-            }
-          }]
+  import { mapGetters } from 'vuex'
+  import adminDashboard from './admin'
+  import editorDashboard from './editor'
+  import Chart from '../../components/Charts/LineMarker'
+  import WarningGroup from '../../components/Custom/WarningGroup'
+  import SockJS from 'sockjs-client'
+  import Stomp from 'stompjs'
+  import { getErrorsCount, readErrors, getErrorsList, cleanErrorsByCategory } from '../../api/dashboard'
+  import moment from 'moment'
+  let socket;
+  export default {
+    name: 'Dashboard',
+    components: { adminDashboard, editorDashboard, Chart, WarningGroup },
+    data() {
+      return {
+        currentRole: 'adminDashboard',
+        warningList: [],
+        dialogVisible: false,
+        pickerOptions: {
+          shortcuts: [
+            {
+              text: '最近一周',
+              onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                picker.$emit('pick', [start, end])
+              }
+            },
+            {
+              text: '最近一个月',
+              onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                picker.$emit('pick', [start, end])
+              }
+            },
+            {
+              text: '最近三个月',
+              onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                picker.$emit('pick', [start, end])
+              }
+            }]
+        },
+        searchDate: null,
+        showErrorIndex: 1,
+        temperatureValue: 60,
+        currentPage: 0,
+        total: 0,
+        loading: true,
+        notViewList: [null, null, null, null, null, null],
+        errorNumList: [0, 0, 0, 0, 0, 0]
+
+      }
+    },
+    mounted() {
+      this._getErrorsCount()
+    },
+    created() {
+      let stompClient = null;
+      const that = this;
+
+      // 建立连接对象
+      socket = new SockJS('http://localhost:8080/websocket');
+      // 获取STOMP子协议的客户端对象
+      stompClient = Stomp.over(socket);
+
+      // 向服务器发送websocket连接并发送CONNECT帧
+      stompClient.connect({}, function(frame) {
+        // 指定订阅
+        stompClient.subscribe('/user/admin/error', function(res) {
+          const category = data.data.category - 1;
+
+          const notViewList = that.notViewList;
+          const notView = notViewList[category] + 1;
+          notViewList.splice(category, 1, notView);
+
+          const errorNumList = that.errorNumList;
+          const errorNum = errorNumList[category] + 1;
+          errorNumList.splice(category, 1, errorNum);
+
+          that.notViewList = notViewList;
+          that.errorNumList = errorNumList
+        })
+      })
+    },
+    beforeDestroy() {
+      socket.close()
+    },
+    methods: {
+      /**
+       * 显示异常信息
+       */
+      showWarning(flag) {
+
+        // 获取当前显示异常分类的标识
+        this.showErrorIndex = flag;
+
+        /**
+         * 将未读信息变为已读信息
+         */
+        const notViewList = this.notViewList;
+        notViewList.splice(flag - 1, 1, 0);
+
+        // 将未读信息变为已读信息
+        readErrors(flag).then(res => {
+        })
+
+        // 显示弹出层
+        this.dialogVisible = true;
+        // 获取数据
+        this._getErrorsList(0, flag)
       },
-      searchDate: [],
-      showErrorIndex: 1,
-      temperatureValue: 60,
-      notViewList: [null, null, null, null, null, null],
-      errorNumList: [0, 0, 0, 0, 0, 0]
 
-    }
-  },
-  mounted() {
-    getErrorCount().then(res => {
-      const data = res.data;
-      const notViewList = [];
-      const errorNumList = [];
+      /**
+       * 根据时间范围搜索异常信息
+       */
+      searchWarning() {
+        this._getErrorsList(0, this.showErrorIndex)
+      },
 
-      data.forEach((item, index) => {
-        notViewList.push(item.notLook);
-        errorNumList.push(item.count)
-      });
+      /**
+       * 清除历史异常信息
+       */
+      cleanErrorMsg() {
+        this.$confirm('此操作将永久删除异常记录, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 删除异常信息
+          cleanErrorsByCategory(this.showErrorIndex).then(res => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
 
-      this.notViewList = notViewList;
-      this.errorNumList = errorNumList
-    })
-  },
-  created() {
-    let stompClient = null;
-    const that = this;
+            // 刷新数据
+            this._getErrorsList(0, this.showErrorIndex)
+            // 刷新异常信息条数
+            this._getErrorsCount()
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      },
 
-    // 建立连接对象
-    socket = new SockJS('http://localhost:8080/websocket');
-    // 获取STOMP子协议的客户端对象
-    stompClient = Stomp.over(socket);
+      /**
+       * 获取异常信息条数
+       */
+      _getErrorsCount() {
+        getErrorsCount().then(res => {
+          const data = res.data;
+          const notViewList = [];
+          const errorNumList = [];
 
-    // 向服务器发送websocket连接并发送CONNECT帧
-    stompClient.connect({}, function(frame) {
-      // 指定订阅
-      stompClient.subscribe('/user/admin/error', function(res) {
-        const data = JSON.parse(res.body);
-        console.log('====接收到指定订阅(/user/admin/error)返回的数据====');
-        console.log(data);
-        const category = data.data.category - 1;
+          data.forEach((item, index) => {
+            notViewList.push(item.notLook);
+            errorNumList.push(item.count)
+          });
 
-        const notViewList = that.notViewList;
-        const notView = notViewList[category] + 1;
-        notViewList.splice(category, 1, notView);
+          this.notViewList = notViewList;
+          this.errorNumList = errorNumList
+        })
+      },
 
-        const errorNumList = that.errorNumList;
-        const errorNum = errorNumList[category] + 1;
-        errorNumList.splice(category, 1, errorNum);
+      /**
+       * 获取异常信息（分页）
+       * @param page
+       * @param category
+       * @private
+       */
+      _getErrorsList(page, category) {
+        let searchDate = this.searchDate
+        let date = searchDate === null ? [] : searchDate
 
-        that.notViewList = notViewList;
-        that.errorNumList = errorNumList
-      })
-    })
-  },
-  beforeDestroy() {
-    socket.close()
-  },
-  methods: {
-    showWarning(flag) {
-      this.showErrorIndex = flag;
+        getErrorsList({page: page, size: 5, category: category, startTime: date[0], endTime: date[1]}).then(res => {
+          let data = res.data
+          this.warningList = data.list
+          this.total = data.total
+          this.loading = false
+        })
+      },
 
-      const notViewList = this.notViewList;
-      const notView = notViewList[flag - 1] + 1;
-      notViewList.splice(flag - 1, 1, null);
+      /**
+       * 选择第几页显示
+       * @param page
+       */
+      handleCurrentChange(page) {
+        this._getErrorsList(page - 1, this.showErrorIndex)
+      },
 
-      this.dialogVisible = true;
-      this.warningList = [
-        {
-          id: 1,
-          title: '风扇异常',
-          message: 'The fan stops running',
-          date: '2020/07/23 11:11:11'
+      /**
+       * 弹出层关闭
+       */
+      handleClose() {
+        this.currentPage = 0
+        this.dialogVisible = false
+        this.searchDate = null
+        this.loading = true
+      },
+
+      /**
+       * 日期处理
+       * @param row
+       * @param column
+       * @returns {string}
+       */
+      dateFormat(row,column){
+        let date = row[column.property];
+        if(date === undefined){
+          return ''
         }
-      ]
-    },
-    searchWarning() {
-      const date = this.searchDate;
-      console.log(date);
-      console.log(typeof date)
-    },
-    cleanErrorMsg() {
-      this.$confirm('此操作将永久删除异常记录, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
+        return moment(date).format("YYYY-MM-DD HH:mm:ss")
+      }
     }
   }
-}
 </script>
 <style lang="scss" scoped>
   @import "../../styles/dashboard";
